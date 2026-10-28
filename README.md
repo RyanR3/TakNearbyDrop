@@ -90,7 +90,7 @@ On two test phones, a 25 MB package took about 9–12 seconds with **no shared W
 ## Install
 
 Download the APK for your ATAK version from
-[Releases](https://github.com/RyanR3/NearbyDrop/releases). The APKs are built and signed by
+[Releases](https://github.com/RyanR3/TakNearbyDrop/releases). The APKs are built and signed by
 the TAK Product Center, so they load in the production ATAK-CIV from the Play Store or
 tak.gov.
 
