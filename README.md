@@ -37,8 +37,17 @@ On the receiving phone, open Nearby Drop and tap **Receive**.
 | Nearby Drop in ATAK's Lasso Select actions | The plugin pane |
 | ![Send choices](docs/screenshots/04-send-choices.jpg) | ![Picking items](docs/screenshots/05-pick.jpg) |
 | What to send | Tap items on the map to pick them |
-| ![Sending](docs/screenshots/06-sending.jpg) | |
-| Offering the package to nearby phones | |
+| ![Sending](docs/screenshots/06-sending.jpg) | ![Send dialog](docs/screenshots/07-send-dialog.jpg) |
+| Offering the package to nearby phones | Nearby Drop in ATAK's Send dialog |
+
+### On the receiving phone
+
+| | |
+|---|---|
+| ![Offer](docs/screenshots/08-offer.jpg) | ![Imported](docs/screenshots/09-imported.jpg) |
+| The offer shows who is sending what, and how big, before connecting | Accepted: the markers land on the map |
+| ![Delivered](docs/screenshots/10-delivered.jpg) | |
+| Back on the sender: delivered to each phone | |
 
 ## How it works
 
