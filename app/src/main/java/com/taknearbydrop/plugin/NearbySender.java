@@ -5,16 +5,21 @@ import android.graphics.drawable.Drawable;
 
 import com.atakmap.android.data.URIHelper;
 import com.atakmap.android.data.URIScheme;
+import com.atakmap.android.importexport.CotEventFactory;
 import com.atakmap.android.importexport.send.MissionPackageSender;
+import com.atakmap.android.maps.MapItem;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.missionpackage.api.MissionPackageApi;
 import com.atakmap.android.missionpackage.file.MissionPackageBuilder;
 import com.atakmap.android.missionpackage.file.MissionPackageManifest;
 import com.atakmap.android.missionpackage.file.task.MissionPackageBaseTask;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
+import com.atakmap.coremap.cot.event.CotEvent;
 import com.atakmap.coremap.log.Log;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 /**
@@ -112,14 +117,51 @@ final class NearbySender extends MissionPackageSender {
         return true;
     }
 
-    /** Packages map items (by uid) and files into one data package and drops it. */
+    /**
+     * Drops map items (by uid) and files. A single item without attachments goes as its bare
+     * CoT event, the way ATAK sends one marker to a contact, so the receiver gets it straight on
+     * the map; anything more is packaged into one data package.
+     */
     boolean sendItems(String name, Collection<String> uids, Collection<File> files) {
+        if (uids.size() == 1 && files.isEmpty()) {
+            String uid = uids.iterator().next();
+            MapItem item = _mapView.getRootGroup().deepFindUID(uid);
+            if (item != null && !hasAttachments(uid)) {
+                File cot = writeCot(name, item);
+                if (cot != null) {
+                    target.sendNearby(cot);
+                    return true;
+                }
+            }
+        }
         MissionPackageManifest m = MissionPackageApi.CreateTempManifest(name);
         for (String uid : uids)
             m.addMapItem(uid);
         for (File f : files)
             m.addFile(f, null);
         return sendMissionPackage(m, null, null);
+    }
+
+    private File writeCot(String name, MapItem item) {
+        CotEvent event = CotEventFactory.createCotEvent(item);
+        if (event == null || !event.isValid())
+            return null;
+        if (!outgoing.isDirectory() && !outgoing.mkdirs())
+            Log.w(TAG, "cannot create " + outgoing);
+        File f = new File(outgoing, (name.isEmpty() ? "marker" : name) + ".cot");
+        try (FileOutputStream out = new FileOutputStream(f)) {
+            out.write(event.toString().getBytes(StandardCharsets.UTF_8));
+        } catch (java.io.IOException e) {
+            Log.e(TAG, "cot write failed", e);
+            return null;
+        }
+        Log.i(TAG, "cot " + f + " (" + f.length() + " B)");
+        return f;
+    }
+
+    private static boolean hasAttachments(String uid) {
+        File[] files = FileSystemUtils.getItem("attachments/" + uid).listFiles();
+        return files != null && files.length > 0;
     }
 
     /** Deletes packages built for earlier sends; nothing else is ever kept there. */

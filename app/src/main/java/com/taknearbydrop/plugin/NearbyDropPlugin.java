@@ -18,10 +18,12 @@ import android.widget.Toast;
 
 import com.atak.plugins.impl.PluginContextProvider;
 import com.atak.plugins.impl.PluginLayoutInflater;
+import com.atakmap.android.cot.CotMapComponent;
 import com.atakmap.android.data.URIContentManager;
 import com.atakmap.android.importexport.ImportExportMapComponent;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapView;
+import com.atakmap.coremap.cot.event.CotEvent;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 
 import java.io.File;
@@ -341,7 +343,7 @@ public class NearbyDropPlugin implements IPlugin, DropLink.Listener, NearbySende
                 return;     // the pane shows the offer with its own Accept button
             new AlertDialog.Builder(mapView.getContext())
                 .setTitle("Nearby data package")
-                .setMessage(o.from + " is sharing\n\n" + o.name + "\n" + Offer.human(o.size))
+                .setMessage(o.from + " is sharing\n\n" + shown(o.name) + "\n" + Offer.human(o.size))
                 .setPositiveButton("Accept", (d, w) -> link.accept(endpointId))
                 .setNegativeButton("Ignore", (d, w) -> link.ignore(endpointId))
                 .show();
@@ -351,6 +353,10 @@ public class NearbyDropPlugin implements IPlugin, DropLink.Listener, NearbySende
     @Override
     public void onReceived(Offer o, File file) {
         mapView.post(() -> {
+            if (file.getName().endsWith(".cot") && dispatchCot(file)) {
+                toast("Received " + shown(o.name) + " from " + o.from);
+                return;
+            }
             toast("Received " + o.name + " from " + o.from + " — importing");
             // Same path a user-opened file takes: data packages go to the Data Package
             // importer, KML/images/etc. to theirs.
@@ -361,6 +367,30 @@ public class NearbyDropPlugin implements IPlugin, DropLink.Listener, NearbySende
             i.putExtra("zoomToFile", false);
             AtakBroadcast.getInstance().sendBroadcast(i);
         });
+    }
+
+    /**
+     * A single marker arrives as a bare CoT event. Hand it to ATAK's internal dispatcher — the
+     * same path a marker sent to this user through a server takes — so it lands on the map
+     * without a Data Packages entry.
+     */
+    private boolean dispatchCot(File file) {
+        try {
+            String xml = new String(java.nio.file.Files.readAllBytes(file.toPath()),
+                    java.nio.charset.StandardCharsets.UTF_8);
+            CotEvent event = CotEvent.parse(xml);
+            if (event == null || !event.isValid()) {
+                Log.w(TAG, "not a valid CoT event: " + file);
+                return false;
+            }
+            CotMapComponent.getInternalDispatcher().dispatch(event);
+            Log.i(TAG, "dispatched CoT " + event.getUID() + " (" + event.getType() + ")");
+            FileSystemUtils.deleteFile(file);
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "CoT dispatch failed", e);
+            return false;
+        }
     }
 
     private void refresh() {
@@ -388,7 +418,7 @@ public class NearbyDropPlugin implements IPlugin, DropLink.Listener, NearbySende
         if (m == DropLink.Mode.SENDING) {
             Offer o = link.currentOffer();
             int done = link.doneCount();
-            sessionTitle.setText(o.name);
+            sessionTitle.setText(shown(o.name));
             sessionSub.setText(Offer.human(o.size) + "  ·  "
                     + (done == 0 ? "Waiting for nearby phones…"
                             : done + (done == 1 ? " phone has it" : " phones have it")));
@@ -437,7 +467,7 @@ public class NearbyDropPlugin implements IPlugin, DropLink.Listener, NearbySende
         View actions = row.findViewById(R.id.peer_actions);
 
         boolean receiving = m == DropLink.Mode.RECEIVING && l.offer != null;
-        name.setText(receiving ? l.offer.name : l.name);
+        name.setText(receiving ? shown(l.offer.name) : l.name);
 
         String s = l.status;
         int pct = l.percent();
@@ -482,6 +512,11 @@ public class NearbyDropPlugin implements IPlugin, DropLink.Listener, NearbySende
             bar.setProgress(pct);
         }
         actions.setVisibility(receiving && "offered".equals(s) ? View.VISIBLE : View.GONE);
+    }
+
+    /** A single marker travels as "Name.cot"; people just see the marker's name. */
+    private static String shown(String name) {
+        return name.endsWith(".cot") ? name.substring(0, name.length() - 4) : name;
     }
 
     private void toast(String s) {

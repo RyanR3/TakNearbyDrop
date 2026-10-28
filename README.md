@@ -73,8 +73,16 @@ Nearby Drop uses Google's
 3. The sender pushes the file; the receiver saves it to `atak/tools/nearbydrop/`, hands it
    to ATAK's importer, and reports back so the sender can show **Delivered**.
 
-Map items are packaged as a small data package (a few KB for a handful of markers), so
-they import exactly like a data package from a TAK Server.
+Map items travel the way ATAK sends them to a contact through a TAK Server:
+
+- **One marker, route or shape** (no attachments) goes as its bare CoT event. The receiver
+  hands it to ATAK's CoT dispatcher, so it appears straight on the map with no Data Packages
+  entry.
+- **Several items, or items with attachments,** go as a small data package (a few KB for a
+  handful of markers) and import like a data package from a TAK Server.
+
+Either way the items keep their IDs, so sending a marker again updates the receiver's copy
+instead of adding a duplicate.
 
 On two test phones, a 25 MB package took about 9–12 seconds with **no shared Wi-Fi network**
 (Nearby used Wi-Fi Aware) and under 2 seconds when both phones were on the same network.
