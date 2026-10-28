@@ -96,9 +96,9 @@ tak.gov.
 
 | ATAK | APK |
 |---|---|
-| 5.6 | `ATAK-Plugin-TAKNearbyDrop-0.1--5.6.0-civ-release.apk` |
-| 5.7 | `ATAK-Plugin-TAKNearbyDrop-0.1--5.7.0-civ-release.apk` |
-| 5.8 | `ATAK-Plugin-TAKNearbyDrop-0.1--5.8.0-civ-release.apk` |
+| 5.6 | `ATAK-Plugin-TAKNearbyDrop-0.2--5.6.0-civ-release.apk` |
+| 5.7 | `ATAK-Plugin-TAKNearbyDrop-0.2--5.7.0-civ-release.apk` |
+| 5.8 | `ATAK-Plugin-TAKNearbyDrop-0.2--5.8.0-civ-release.apk` |
 
 Install the APK, then in ATAK open **Plugins**, and load **Nearby Drop** if it is not loaded
 already.
@@ -131,9 +131,6 @@ connect time, link type and speed for each phone.
   **Nearby Drop** action instead.
 - A Bluetooth-only transfer cannot be forced: Google Play services turns Wi-Fi on when it
   needs it.
-- Version 0.1 keeps a copy of each package it builds from map items in the sending
-  phone's Data Packages list. The next release builds them in the plugin's own folder and
-  deletes them when the send ends, like a send to a contact.
 
 ## Building from source
 
@@ -167,4 +164,4 @@ build of ATAK. For production ATAK, use the TAK Product Center builds from Relea
 
 ## Version
 
-0.1 — first release.
+0.2 — first public release.
