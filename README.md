@@ -35,14 +35,16 @@ On the receiving phone, open Nearby Drop and tap **Receive**.
 
 <table>
   <tr>
-    <td width="33%" align="center"><img src="docs/screenshots/01-radial.jpg" alt="Radial menu" width="100%"><br><sub>Nearby Drop button on a marker's radial menu</sub></td>
-    <td width="33%" align="center"><img src="docs/screenshots/02-lasso-action.jpg" alt="Lasso action" width="100%"><br><sub>Nearby Drop in ATAK's Lasso Select actions</sub></td>
-    <td width="33%" align="center"><img src="docs/screenshots/07-send-dialog.jpg" alt="Send dialog" width="100%"><br><sub>Nearby Drop in ATAK's Send dialog</sub></td>
+    <td width="50%" align="center"><img src="docs/screenshots/01-radial.jpg" alt="Radial menu" width="100%"><br><sub>Nearby Drop button on a marker's radial menu</sub></td>
+    <td width="50%" align="center"><img src="docs/screenshots/02-lasso-action.jpg" alt="Lasso action" width="100%"><br><sub>Nearby Drop in ATAK's Lasso Select actions</sub></td>
   </tr>
   <tr>
-    <td width="33%" align="center"><img src="docs/screenshots/04-send-choices.jpg" alt="Send choices" width="100%"><br><sub>Send from the pane: what to send</sub></td>
-    <td width="33%" align="center"><img src="docs/screenshots/05-pick.jpg" alt="Picking items" width="100%"><br><sub>Tap items on the map to pick them</sub></td>
-    <td width="33%" align="center"><img src="docs/screenshots/06-sending.jpg" alt="Sending" width="100%"><br><sub>Offering the package to nearby phones</sub></td>
+    <td width="50%" align="center"><img src="docs/screenshots/07-send-dialog.jpg" alt="Send dialog" width="100%"><br><sub>Nearby Drop in ATAK's Send dialog</sub></td>
+    <td width="50%" align="center"><img src="docs/screenshots/04-send-choices.jpg" alt="Send choices" width="100%"><br><sub>Send from the pane: what to send</sub></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><img src="docs/screenshots/05-pick.jpg" alt="Picking items" width="100%"><br><sub>Tap items on the map to pick them</sub></td>
+    <td width="50%" align="center"><img src="docs/screenshots/06-sending.jpg" alt="Sending" width="100%"><br><sub>Offering the package to nearby phones</sub></td>
   </tr>
 </table>
 
@@ -50,9 +52,11 @@ On the receiving phone, open Nearby Drop and tap **Receive**.
 
 <table>
   <tr>
-    <td width="33%" align="center"><img src="docs/screenshots/08-offer.jpg" alt="Offer" width="100%"><br><sub>The offer shows who is sending what, and how big</sub></td>
-    <td width="33%" align="center"><img src="docs/screenshots/09-imported.jpg" alt="Imported" width="100%"><br><sub>Accepted: the markers land on the map</sub></td>
-    <td width="33%" align="center"><img src="docs/screenshots/10-delivered.jpg" alt="Delivered" width="100%"><br><sub>Back on the sender: delivered to each phone</sub></td>
+    <td width="50%" align="center"><img src="docs/screenshots/08-offer.jpg" alt="Offer" width="100%"><br><sub>The offer shows who is sending what, and how big</sub></td>
+    <td width="50%" align="center"><img src="docs/screenshots/09-imported.jpg" alt="Imported" width="100%"><br><sub>Accepted: the markers land on the map</sub></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src="docs/screenshots/10-delivered.jpg" alt="Delivered" width="50%"><br><sub>Back on the sender: delivered to each phone</sub></td>
   </tr>
 </table>
 
