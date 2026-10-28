@@ -123,8 +123,9 @@ connect time, link type and speed for each phone.
   **Nearby Drop** action instead.
 - A Bluetooth-only transfer cannot be forced: Google Play services turns Wi-Fi on when it
   needs it.
-- The sending phone keeps a copy of each package it builds from map items in its Data
-  Packages list.
+- Version 0.1 keeps a copy of each package it builds from map items in the sending
+  phone's Data Packages list. The next release builds them in the plugin's own folder and
+  deletes them when the send ends, like a send to a contact.
 
 ## Building from source
 

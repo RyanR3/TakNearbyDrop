@@ -147,8 +147,10 @@ public class NearbyDropPlugin implements IPlugin, DropLink.Listener, NearbySende
     public void onStop() {
         if (uiService != null)
             uiService.removeToolbarItem(toolbarItem);
-        if (sender != null)
+        if (sender != null) {
             URIContentManager.getInstance().unregisterSender(sender);
+            sender.clearOutgoing();
+        }
         if (mapShare != null)
             mapShare.stop();
         if (link != null)
@@ -324,7 +326,12 @@ public class NearbyDropPlugin implements IPlugin, DropLink.Listener, NearbySende
 
     @Override
     public void onStateChanged() {
-        mapView.post(this::refresh);
+        mapView.post(() -> {
+            // A send session ended: drop any package we built from map items for it.
+            if (link.mode() == DropLink.Mode.IDLE && sender != null)
+                sender.clearOutgoing();
+            refresh();
+        });
     }
 
     @Override
