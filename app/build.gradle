@@ -12,6 +12,18 @@ buildscript {
     // Target ATAK release. Default 5.7.0; build for another release with e.g. `-Patak=5.6.0`
     // and that SDK's main.jar in app/libs.
     ext.ATAK_VERSION = project.findProperty('atak') ?: '5.7.0'
+    // versionCode is derived from PLUGIN_VERSION and the ATAK target, never from git (takdev's
+    // getVersionCode() yields 1 on tak.gov's git-less build, so MDM/Knox refuses the update):
+    //   (major*10000 + minor*100 + patch) * 10000 + atakMajor*1000 + atakMinor*10 + atakPatch
+    // so each ATAK build of a release gets its own code (0.3 → 3005060 / 3005070 / 3005080 for
+    // 5.6 / 5.7 / 5.8) and every new PLUGIN_VERSION outranks all of them.
+    def pv = PLUGIN_VERSION.tokenize('.')*.toInteger()
+    def av = ATAK_VERSION.tokenize('.').take(3)*.toInteger()
+    if (pv.size() > 3 || pv[0] > 20 || pv.drop(1).any { it > 99 } || av.size() < 2
+            || av[0] > 9 || av[1] > 99 || (av.size() > 2 && av[2] > 9))
+        throw new GradleException("PLUGIN_VERSION ${PLUGIN_VERSION} / ATAK_VERSION ${ATAK_VERSION} out of versionCode range")
+    ext.PLUGIN_VERSION_CODE = (pv[0] * 10000 + (pv[1] ?: 0) * 100 + (pv[2] ?: 0)) * 10000 +
+            av[0] * 1000 + av[1] * 10 + (av[2] ?: 0)
 
     def takdevVersion = '3.+'
 
@@ -181,14 +193,7 @@ android {
     sourceSets {
         main {
             setProperty("archivesBaseName", "ATAK-Plugin-" + rootProject.name + "-" + PLUGIN_VERSION + "-" + getVersionName() + "-" + ATAK_VERSION)
-            // versionCode DERIVED from PLUGIN_VERSION (never from git/takdev getVersionCode(),
-            // which yields 1 on tak.gov's git-less build → Knox refuses the "upgrade"). Formula:
-            // major*10000 + minor*100 + patch (2.1 → 20100). minor/patch max 99. Verify with
-            // `aapt2 dump badging` on the tak.gov-built APK.
-            def vparts = PLUGIN_VERSION.tokenize('.')
-            defaultConfig.versionCode = vparts[0].toInteger() * 10000 +
-                    (vparts.size() > 1 ? vparts[1].toInteger() : 0) * 100 +
-                    (vparts.size() > 2 ? vparts[2].toInteger() : 0)
+            defaultConfig.versionCode = PLUGIN_VERSION_CODE
             defaultConfig.versionName = PLUGIN_VERSION + " (" + getVersionName() + ") - [" + ATAK_VERSION + "]"
         }
 

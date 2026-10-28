@@ -159,9 +159,15 @@ build of ATAK. For production ATAK, use the TAK Product Center builds from Relea
   context that reports the plugin's own package, after which every Nearby call runs on
   ATAK's context and permissions. It uses an obfuscated Play services class, so re-check it
   whenever the `play-services-nearby` version changes.
-- `versionCode` is derived from `PLUGIN_VERSION` (0.2 → 200), never from git, so
-  git-less builds still upgrade cleanly under MDM.
+- `versionCode` is derived from `PLUGIN_VERSION` and the ATAK target, never from git, so
+  git-less tak.gov builds still upgrade cleanly under MDM, and each ATAK build of a release
+  gets its own code: `(major*10000 + minor*100 + patch) * 10000 + atakMajor*1000 +
+  atakMinor*10 + atakPatch` (for example 0.3 on 5.6 / 5.7 / 5.8 → 3005060 / 3005070 / 3005080).
 
 ## Version
 
 0.2 — first public release.
+
+## License
+
+[GNU General Public License v3.0](LICENSE).
