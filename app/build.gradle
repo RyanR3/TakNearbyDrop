@@ -8,7 +8,7 @@
 
 buildscript {
 
-    ext.PLUGIN_VERSION = "0.1"
+    ext.PLUGIN_VERSION = "0.2"
     // Target ATAK release. Default 5.7.0; build for another release with e.g. `-Patak=5.6.0`
     // and that SDK's main.jar in app/libs.
     ext.ATAK_VERSION = project.findProperty('atak') ?: '5.7.0'
