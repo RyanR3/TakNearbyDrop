@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nearby Drop</string>
+    <string name="app_desc">Send markers, data packages and files straight to nearby phones, no server needed</string>
+    <string name="send_nearby">Nearby Drop</string>
+    <string name="tile_send">Send</string>
+    <string name="tile_send_sub">Markers, packages, files</string>
+    <string name="tile_receive">Receive</string>
+    <string name="tile_receive_sub">Get one from nearby</string>
+    <string name="btn_stop">Stop</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="ignore">Ignore</string>
+    <string name="settings_closed">▸  Settings</string>
+    <string name="settings_open">▾  Settings</string>
+    <string name="log_closed">▸  Activity log</string>
+    <string name="log_open">▾  Activity log</string>
+    <string name="btn_clear">Clear log</string>
+    <string name="team_code">Team code</string>
+    <string name="team_hint">Blank = anyone nearby</string>
+    <string name="team_help">Only phones with the same code can see each other\'s packages.</string>
+    <string name="wifi_upgrade">Allow leaving my Wi-Fi network</string>
+    <string name="wifi_upgrade_help">Lets older phones use a faster direct link, briefly dropping their Wi-Fi network. Turn off if that network carries TAK (e.g. a mesh radio). Newer phones stay fast either way.</string>
+    <string name="auto_accept">Auto-accept packages from my team</string>
+</resources>
